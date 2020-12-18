@@ -1,0 +1,10 @@
+D:\c++\azaamat\2 курс\lab6\lab6\bin\Debug\lab6.exe.config
+D:\c++\azaamat\2 курс\lab6\lab6\bin\Debug\lab6.exe
+D:\c++\azaamat\2 курс\lab6\lab6\bin\Debug\lab6.pdb
+D:\c++\azaamat\2 курс\lab6\lab6\obj\Debug\lab6.csprojAssemblyReference.cache
+D:\c++\azaamat\2 курс\lab6\lab6\obj\Debug\lab6.Form1.resources
+D:\c++\azaamat\2 курс\lab6\lab6\obj\Debug\lab6.Properties.Resources.resources
+D:\c++\azaamat\2 курс\lab6\lab6\obj\Debug\lab6.csproj.GenerateResource.cache
+D:\c++\azaamat\2 курс\lab6\lab6\obj\Debug\lab6.csproj.CoreCompileInputs.cache
+D:\c++\azaamat\2 курс\lab6\lab6\obj\Debug\lab6.exe
+D:\c++\azaamat\2 курс\lab6\lab6\obj\Debug\lab6.pdb
