@@ -22,8 +22,17 @@ namespace lab6
         {
             for (int i = 0; i < Circle.GetTotalElements(); i++)
             {
-                Circle.GetNow().Draw(e); //отрисовка нового круга 
-                Circle.GetNext(); // указатель на следующий
+                if (circleRadioButton.Checked)
+                {
+                    Circle.GetNow().Draw(e); //отрисовка нового круга 
+                    Circle.GetNext(); // указатель на следующий
+                }
+                if (lineRadioButton.Checked)
+                {
+                    Circle.GetNow().Draw(e); //отрисовка нового круга 
+                    Circle.GetNext(); // указатель на следующий
+                }
+
             }
             Circle.Get0();
         }
@@ -49,7 +58,6 @@ namespace lab6
             {
                 Circle.Delete(Circle.GetTotalElements() - 1);
                 Circle.GetPrevious();
-
             }
 
             Circle.Get0();
@@ -63,56 +71,67 @@ namespace lab6
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e) //нажатие мышки на pictureBox
         {
-
-            if (e.Button == MouseButtons.Left)
-            {
-                int a = 0;
-                for (int i = 0; i < Circle.GetTotalElements(); i++)
+           
+                if (e.Button == MouseButtons.Left)
                 {
-
-                    if (Circle.GetNow().Border(e.X, e.Y) == true) //если попали в круг 
+                    int a = 0;
+                    for (int i = 0; i < Circle.GetTotalElements(); i++)
                     {
-                        if (!ModifierKeys.HasFlag(Keys.Control)) //если нажат ctrl
+
+                        if (Circle.GetNow().Border(e.X, e.Y) == true) //если попали в круг 
                         {
-                            Circle.GetNow().SelectChange(); //меняем выделение с true на false
+                            if (!ModifierKeys.HasFlag(Keys.Control)) //если нажат ctrl
+                            {
+                                Circle.GetNow().SelectChange(); //меняем выделение с true на false
+                            }
+                            a++;
                         }
-                        a++;
+                        Circle.GetNext(); //сдвигаем указатель на следующий 
                     }
-                    Circle.GetNext(); //сдвигаем указатель на следующий 
-                }
-                Circle.Get0();
+                    Circle.Get0();
 
-                if (a == 0) //если не попали в круг
-                {
-                    CCircle Lap = new CCircle(e.X, e.Y); //создаем новый круг по полученным координатам
-                    Circle.Add(Lap); // добавляем круг в хранилище
-
-                    for (int i = 0; i < (Circle.GetTotalElements() - 1); i++)
+                    if (a == 0) //если не попали в круг
                     {
-                        Circle.GetNext();
-                    }
-                    Circle.GetNow().SelectChange2(); //делаем созданный объект единственно выделенным
-
-                    for (int i = Circle.GetTotalElements() - 1; i >= 0; i--)
-                    {
-                        if (Circle.GetNow().Getselect1() == true)
+                        if (circleRadioButton.Checked)
                         {
+                            CCircle Lap = new CCircle(e.X, e.Y); //создаем новый круг по полученным координатам
+                            Circle.Add(Lap); // добавляем круг в хранилище
+                        
+                    }
+                        else if (lineRadioButton.Checked)
+                        {
+                            LLine Pal = new LLine(e.X, e.Y);
+                            Circle.Add(Pal);
+                        
+                    }
+
+
+                        for (int i = 0; i < (Circle.GetTotalElements() - 1); i++)
+                        {
+                        Circle.GetNext();
+                        }
+                        Circle.GetNow().SelectChange2(); //делаем созданный объект единственно выделенным
+
+                        for (int i = Circle.GetTotalElements() - 1; i >= 0; i--)
+                        {
+                            if (Circle.GetNow().Getselect1() == true)
+                            {
                             Circle.GetNow().SelectChange();
+                            }
+
+                            Circle.GetPrevious();
                         }
-                        Circle.GetPrevious();
-                    }
-                    Circle.Get0();
+                        Circle.Get0();
 
-                    for (int i = 0; i < (Circle.GetTotalElements() - 1); i++)
-                    {
-                        Circle.GetNext();
+                        for (int i = 0; i < (Circle.GetTotalElements() - 1); i++)
+                        {
+                         Circle.GetNext();
+                        }
+                        Circle.GetNow().SelectChange2();
+                        Circle.Get0();
                     }
-                    Circle.GetNow().SelectChange2();
-                    Circle.Get0();
+                    pictureBox.Refresh();
                 }
-                pictureBox.Refresh();
-            }
-
         }
 
         private void Form1_KeyDown_1(object sender, KeyEventArgs e)
@@ -215,13 +234,6 @@ namespace lab6
             Circle.Get0();
             pictureBox.Refresh();
 
-            void lastelement() {
-                for (int i = 0; i < (Circle.GetTotalElements() - 1); i++) //сдвиг счетчика на последний элемент
-                {
-                    Circle.GetNext();
-                }
-            }
-
         }
         public class CCircle
         {
@@ -230,7 +242,6 @@ namespace lab6
             public int y; // координата y круга 
             public int r = 30; // радиус
             public int color;
-
 
             public CCircle() // конструктор по умолчанию
             {
@@ -266,7 +277,7 @@ namespace lab6
                 }
 
             }
-            public bool Border(int xS, int yS) // проверка попадания в круг 
+            public virtual bool Border(int xS, int yS) // проверка попадания в круг 
             {
                 bool bord = false;
                 int _x = Math.Abs(xS - x);
@@ -285,10 +296,8 @@ namespace lab6
                 }
                 return bord;
             }
-            
-          
-
-            public void Draw(PaintEventArgs e) //отрисовка объекта в pictureBox
+         
+            public virtual void Draw(PaintEventArgs e) //отрисовка объекта в pictureBox
             {
                 Pen Pen1 = new Pen(Brushes.Pink, 4);
                 Pen Pen2 = new Pen(Brushes.Black, 4);
@@ -319,6 +328,101 @@ namespace lab6
                 else
                 {
                     e.Graphics.DrawEllipse(Pen2, x - r, y - r, r * 2, r * 2);// отрисовка круга черным цветом
+                }
+            }
+        }
+        public class LLine : CCircle
+        {
+            private bool select; //выделение объекта
+            //public int x; // координата x круга
+           //public int y; // координата y круга 
+            public int r = 60; // радиус
+            //public int color;
+
+            public LLine() // конструктор по умолчанию
+            {
+                x = 0;
+                select = false;
+                color = 0;
+            }
+            public LLine(int _x,int _y) // конструктор с параметрами
+            {
+                x = _x;
+                y = _y;
+                select = false;
+                color = 0;
+            }
+            //public bool Getselect1()// возвращает выделен ли объект
+            //{
+            //    return select;
+            //}
+
+            //public void SelectChange()  //метод снимающий выделение, если объект выделен
+            //{
+            //    if (select == true)
+            //    {
+            //        select = false;
+            //    }
+
+            //}
+            //public void SelectChange2()  //метод выделяющий объект, если он не выделен
+            //{
+            //    if (select == false)
+            //    {
+            //        select = true;
+            //    }
+
+            //}
+            public override bool Border(int xS, int yS) // проверка попадания в линию
+            {
+                bool bord = false;
+
+                if ((x<=xS)&&(xS<= x + r)&&(yS==y)) // попадание координат в линию
+                {
+                    if (select == true)
+                    {
+                        select = false;
+                    }
+                    else
+                    {
+                        select = true;
+                    }
+                    bord = true;
+                }
+                return bord;
+            }
+
+            public override void Draw(PaintEventArgs e) //отрисовка объекта в pictureBox
+            {
+                Pen Pen1 = new Pen(Brushes.Pink, 4);
+                Pen Pen2 = new Pen(Brushes.Black, 4);
+                Pen Pen3 = new Pen(Brushes.Blue, 4);
+                Pen Pen4 = new Pen(Brushes.Green, 4);
+                Pen Pen5 = new Pen(Brushes.Red, 4);
+
+                if (select == true) // если он выделен
+                {
+                    e.Graphics.DrawLine(Pen1, x, y, x+r, y); // отрисовка круга розовым цветом
+                }
+                else if (color == 1)
+                {
+                    e.Graphics.DrawLine(Pen3, x, y, x + r, y); ; // отрисовка круга розовым цветом
+                }
+                else if (color == 2)
+                {
+                    e.Graphics.DrawLine(Pen4, x, y, x + r, y); ; // отрисовка круга розовым цветом
+                }
+                else if (color == 3)
+                {
+                    e.Graphics.DrawLine(Pen5, x, y, x + r, y); ; // отрисовка круга розовым цветом
+                }
+                else if (color == 4)
+                {
+                    e.Graphics.DrawLine(Pen2, x, y, x + r, y); ; // отрисовка круга розовым цветом
+                }
+                else
+                {
+                    e.Graphics.DrawLine(Pen2, x, y, x + r, y); ;// отрисовка круга черным цветом
                 }
             }
         }
