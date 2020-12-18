@@ -131,20 +131,47 @@ namespace lab6
             {
                 if (Circle.GetNow().Getselect1() == true) //если объект выделен
                 {
-
                     if (e.KeyValue == ((char)Keys.Oemplus))
                     {
                         Circle.GetNow().r = Circle.GetNow().r+1;
                     }
                     if (e.KeyValue == ((char)Keys.OemMinus))
                     {
-                        Circle.GetNow().r = Circle.GetNow().r -1;
+                        Circle.GetNow().r = Circle.GetNow().r-1;
+                    }
+                    
+                    if (e.KeyValue == ((char)Keys.W))
+                    {
+                        if ((Circle.GetNow().y - Circle.GetNow().r) >=0)
+                        {
+                            Circle.GetNow().y = Circle.GetNow().y - 5;
+                        }
+                    }
+                    if (e.KeyValue == ((char)Keys.S))
+                    {
+                        if ((Circle.GetNow().y + Circle.GetNow().r) <= 500)
+                        {
+                            Circle.GetNow().y = Circle.GetNow().y + 5;
+                        }
+                    }
+                    if (e.KeyValue == ((char)Keys.A))
+                    {
+                        if ((Circle.GetNow().x - Circle.GetNow().r) >= 0)
+                        {
+                            Circle.GetNow().x = Circle.GetNow().x - 5;
+                        }
+                    }
+                    if (e.KeyValue == ((char)Keys.D))
+                    {
+                        if ((Circle.GetNow().x + Circle.GetNow().r )<= 500)
+                        {
+                            Circle.GetNow().x = Circle.GetNow().x + 5;
+                        }
                     }
                     k++;
                 }
                 Circle.GetPrevious();
             }
-
             Circle.Get0();
             pictureBox.Refresh();
         }
@@ -188,12 +215,19 @@ namespace lab6
             Circle.Get0();
             pictureBox.Refresh();
 
+            void lastelement() {
+                for (int i = 0; i < (Circle.GetTotalElements() - 1); i++) //сдвиг счетчика на последний элемент
+                {
+                    Circle.GetNext();
+                }
+            }
+
         }
         public class CCircle
         {
             private bool select; //выделение объекта
             public int x; // координата x круга
-            private int y; // координата y круга 
+            public int y; // координата y круга 
             public int r = 30; // радиус
             public int color;
 
