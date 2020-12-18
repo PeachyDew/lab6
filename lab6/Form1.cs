@@ -117,10 +117,36 @@ namespace lab6
 
         private void Form1_KeyDown_1(object sender, KeyEventArgs e)
         {
+            //(x + половина ширины объекта<ширина поля
             if (e.KeyValue == ((char)Keys.Delete))
             {
                 Delete_Process(null);
             }
+            int k = 0;
+            for (int i = 0; i < (Circle.GetTotalElements() - 1); i++) //сдвиг счетчика на последний элемент
+            {
+                Circle.GetNext();
+            }
+            for (int i = Circle.GetTotalElements() - 1; i >= 0; i--)
+            {
+                if (Circle.GetNow().Getselect1() == true) //если объект выделен
+                {
+
+                    if (e.KeyValue == ((char)Keys.Oemplus))
+                    {
+                        Circle.GetNow().r = Circle.GetNow().r+1;
+                    }
+                    if (e.KeyValue == ((char)Keys.OemMinus))
+                    {
+                        Circle.GetNow().r = Circle.GetNow().r -1;
+                    }
+                    k++;
+                }
+                Circle.GetPrevious();
+            }
+
+            Circle.Get0();
+            pictureBox.Refresh();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -130,29 +156,28 @@ namespace lab6
             {
                 Circle.GetNext();
             }
-
             for (int i = Circle.GetTotalElements() - 1; i >= 0; i--)
             {
                 if (Circle.GetNow().Getselect1() == true) //если объект выделен
                 {
                     if (comboBox1.SelectedIndex == 0)
                     {
-                        Circle.GetNow().ColorBlue();
+                        Circle.GetNow().color = 1;
                         Circle.GetNow().SelectChange();
                     }
                     else if (comboBox1.SelectedIndex == 1)
                     {
-                        Circle.GetNow().ColorGreen();
+                        Circle.GetNow().color = 2;
                         Circle.GetNow().SelectChange();
                     }
                     else if(comboBox1.SelectedIndex == 2)
                     {
-                        Circle.GetNow().ColorRed();
+                        Circle.GetNow().color=3;
                         Circle.GetNow().SelectChange();
                     }
                     else if(comboBox1.SelectedIndex == 3)
                     {
-                        Circle.GetNow().ColorBlack();
+                        Circle.GetNow().color = 4;
                         Circle.GetNow().SelectChange();
                     }
                     k++;
@@ -167,10 +192,10 @@ namespace lab6
         public class CCircle
         {
             private bool select; //выделение объекта
-            private int x; // координата x круга
+            public int x; // координата x круга
             private int y; // координата y круга 
-            private const int r = 30; // радиус
-            private int color;
+            public int r = 30; // радиус
+            public int color;
 
 
             public CCircle() // конструктор по умолчанию
@@ -227,22 +252,7 @@ namespace lab6
                 return bord;
             }
             
-            public void ColorBlue() 
-            {
-                color = 1;
-            }
-            public void ColorGreen()
-            {
-                color = 2;
-            }
-            public void ColorRed()
-            {
-                color = 3;
-            }
-            public void ColorBlack()
-            {
-                color = 4;
-            }
+          
 
             public void Draw(PaintEventArgs e) //отрисовка объекта в pictureBox
             {
@@ -252,8 +262,6 @@ namespace lab6
                 Pen Pen4 = new Pen(Brushes.Green, 4);
                 Pen Pen5 = new Pen(Brushes.Red, 4);
                
-
-
                 if (select == true) // если он выделен
                 {
                     e.Graphics.DrawEllipse(Pen1, x - r, y - r, r * 2, r * 2); // отрисовка круга розовым цветом
