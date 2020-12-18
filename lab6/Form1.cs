@@ -123,165 +123,251 @@ namespace lab6
             }
         }
 
-    }
-    public class CCircle
-    {
-        private bool select; //выделение объекта
-        private int x; // координата x круга
-        private int y; // координата y круга 
-        private const int r = 30; // радиус
-        public CCircle() // конструктор по умолчанию
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            y = x = 0;
-            select = false;
-        }
-        public CCircle(int _x, int _y) // конструктор с параметрами
-        {
-            x = _x;
-            y = _y;
-            select = false;
-        }
-        public bool Getselect1()// возвращает выделен ли объект
-        {
-            return select;
-        }
-
-        public void SelectChange()  //метод снимающий выделение, если объект выделен
-        {
-            if (select == true)
+            int k = 0;
+            for (int i = 0; i < (Circle.GetTotalElements() - 1); i++) //сдвиг счетчика на последний элемент
             {
+                Circle.GetNext();
+            }
+
+            for (int i = Circle.GetTotalElements() - 1; i >= 0; i--)
+            {
+                if (Circle.GetNow().Getselect1() == true) //если объект выделен
+                {
+                    if (comboBox1.SelectedIndex == 0)
+                    {
+                        Circle.GetNow().ColorBlue();
+                        Circle.GetNow().SelectChange();
+                    }
+                    else if (comboBox1.SelectedIndex == 1)
+                    {
+                        Circle.GetNow().ColorGreen();
+                        Circle.GetNow().SelectChange();
+                    }
+                    else if(comboBox1.SelectedIndex == 2)
+                    {
+                        Circle.GetNow().ColorRed();
+                        Circle.GetNow().SelectChange();
+                    }
+                    else if(comboBox1.SelectedIndex == 3)
+                    {
+                        Circle.GetNow().ColorBlack();
+                        Circle.GetNow().SelectChange();
+                    }
+                    k++;
+                }
+                Circle.GetPrevious();
+            }
+
+            Circle.Get0();
+            pictureBox.Refresh();
+
+        }
+        public class CCircle
+        {
+            private bool select; //выделение объекта
+            private int x; // координата x круга
+            private int y; // координата y круга 
+            private const int r = 30; // радиус
+            private int color;
+
+
+            public CCircle() // конструктор по умолчанию
+            {
+                y = x = 0;
                 select = false;
+                color = 0;
             }
-
-        }
-        public void SelectChange2()  //метод выделяющий объект, если он не выделен
-        {
-            if (select == false)
+            public CCircle(int _x, int _y) // конструктор с параметрами
             {
-                select = true;
+                x = _x;
+                y = _y;
+                select = false;
+                color = 0;
+            }
+            public bool Getselect1()// возвращает выделен ли объект
+            {
+                return select;
             }
 
-        }
-        public bool Border(int xS, int yS) // проверка попадания в круг 
-        {
-            bool bord = false;
-            int _x = Math.Abs(xS - x);
-            int _y = Math.Abs(yS - y);
-            if ((int)Math.Sqrt(_x * _x + _y * _y) <= r) // попадание координат в круг
+            public void SelectChange()  //метод снимающий выделение, если объект выделен
             {
                 if (select == true)
                 {
                     select = false;
                 }
-                else
+
+            }
+            public void SelectChange2()  //метод выделяющий объект, если он не выделен
+            {
+                if (select == false)
                 {
                     select = true;
                 }
-                bord = true;
-            }
-            return bord;
-        }
-
-        public void Draw(PaintEventArgs e) //отрисовка объекта в pictureBox
-        {
-            Pen Pen1 = new Pen(Brushes.Pink, 4);
-            Pen Pen2 = new Pen(Brushes.Black, 4);
-
-            if (select == true) // если он выделен
-            {
-                e.Graphics.DrawEllipse(Pen1, x - r, y - r, r * 2, r * 2); // отрисовка круга розовым цветом
-            }
-            else
-            {
-                e.Graphics.DrawEllipse(Pen2, x - r, y - r, r * 2, r * 2);// отрисовка круга черным цветом
-            }
-        }
-    }
-
-
-    class MyStorage // класс хранилище
-    {
-        CCircle[] array; //массив объектов CCIrcle
-        int totalElements; //количество элементов , находящихся в хранилище
-        int size; //размер хранилища
-        int index;
-        public MyStorage() // конструктор по умолчанию
-        {
-            index = 0;
-            totalElements = 0;
-            size = 0;
-            array = null;
-        }
-        public MyStorage(int size) // конструктор с параметрами
-        {
-            index = 0;
-            totalElements = 0;
-            this.size = size;
-            array = new CCircle[size];
-        }
-        ~MyStorage()
-        {
-
-        }
-        public void ExpandarrElements()//расширение массива
-        {
-            CCircle[] newarray = array; //создание массива newarray идентичного array 
-            array = new CCircle[size * 2]; // на месте array создается новый массив в 2 раза больше
-            for (int i = 0; i < size; i++)
-            {
-                array[i] = newarray[i]; //копирование элементов
-            }
-            size = size * 2;
-        }
-        public void Add(CCircle obj)//добавление объекта 
-        {
-            totalElements++; // увеличиваем общее количество элементво
-            if (totalElements == size) // если количество элементов равно размеру, увеличиваем
-                ExpandarrElements();
-            array[totalElements - 1] = obj; // добавляем объект в массив
-        }
-        public void Delete(int a)//удаление 
-        {
-            if (totalElements == 0)
-            {
 
             }
-            else
+            public bool Border(int xS, int yS) // проверка попадания в круг 
             {
-                for (int i = a; i < totalElements - 1; i++)
+                bool bord = false;
+                int _x = Math.Abs(xS - x);
+                int _y = Math.Abs(yS - y);
+                if ((int)Math.Sqrt(_x * _x + _y * _y) <= r) // попадание координат в круг
                 {
-                    array[i] = array[i + 1];
+                    if (select == true)
+                    {
+                        select = false;
+                    }
+                    else
+                    {
+                        select = true;
+                    }
+                    bord = true;
                 }
-                array[totalElements] = null;
-                totalElements--;
+                return bord;
+            }
+            
+            public void ColorBlue() 
+            {
+                color = 1;
+            }
+            public void ColorGreen()
+            {
+                color = 2;
+            }
+            public void ColorRed()
+            {
+                color = 3;
+            }
+            public void ColorBlack()
+            {
+                color = 4;
+            }
+
+            public void Draw(PaintEventArgs e) //отрисовка объекта в pictureBox
+            {
+                Pen Pen1 = new Pen(Brushes.Pink, 4);
+                Pen Pen2 = new Pen(Brushes.Black, 4);
+                Pen Pen3 = new Pen(Brushes.Blue, 4);
+                Pen Pen4 = new Pen(Brushes.Green, 4);
+                Pen Pen5 = new Pen(Brushes.Red, 4);
+               
+
+
+                if (select == true) // если он выделен
+                {
+                    e.Graphics.DrawEllipse(Pen1, x - r, y - r, r * 2, r * 2); // отрисовка круга розовым цветом
+                }
+                else if (color == 1)
+                {
+                    e.Graphics.DrawEllipse(Pen3, x - r, y - r, r * 2, r * 2); // отрисовка круга розовым цветом
+                }
+                else if (color == 2)
+                {
+                    e.Graphics.DrawEllipse(Pen4, x - r, y - r, r * 2, r * 2); // отрисовка круга розовым цветом
+                }
+                else if (color == 3)
+                {
+                    e.Graphics.DrawEllipse(Pen5, x - r, y - r, r * 2, r * 2); // отрисовка круга розовым цветом
+                }
+                else if (color == 4)
+                {
+                    e.Graphics.DrawEllipse(Pen2, x - r, y - r, r * 2, r * 2); // отрисовка круга розовым цветом
+                }
+                else
+                {
+                    e.Graphics.DrawEllipse(Pen2, x - r, y - r, r * 2, r * 2);// отрисовка круга черным цветом
+                }
             }
         }
-        public int GetTotalElements() //возращение количество элементов в хранилище
+
+
+        class MyStorage // класс хранилище
         {
-            return totalElements;
-        }
-        public int GetSize()// возвращение размера
-        {
-            return size;
-        }
-        public void GetNext() //метод возвращающий указатель не следующий
-        {
-            index++;
-        }
-        public void GetPrevious()//метод возвращающий указатель не предыдущий
-        {
-            index--;
-        }
-        public void Get0() //метод присваивающий index 0
-        {
-            index = 0;
+            CCircle[] array; //массив объектов CCIrcle
+            int totalElements; //количество элементов , находящихся в хранилище
+            int size; //размер хранилища
+            int index;
+            public MyStorage() // конструктор по умолчанию
+            {
+                index = 0;
+                totalElements = 0;
+                size = 0;
+                array = null;
+            }
+            public MyStorage(int size) // конструктор с параметрами
+            {
+                index = 0;
+                totalElements = 0;
+                this.size = size;
+                array = new CCircle[size];
+            }
+            ~MyStorage()
+            {
+
+            }
+            public void ExpandarrElements()//расширение массива
+            {
+                CCircle[] newarray = array; //создание массива newarray идентичного array 
+                array = new CCircle[size * 2]; // на месте array создается новый массив в 2 раза больше
+                for (int i = 0; i < size; i++)
+                {
+                    array[i] = newarray[i]; //копирование элементов
+                }
+                size = size * 2;
+            }
+            public void Add(CCircle obj)//добавление объекта 
+            {
+                totalElements++; // увеличиваем общее количество элементво
+                if (totalElements == size) // если количество элементов равно размеру, увеличиваем
+                    ExpandarrElements();
+                array[totalElements - 1] = obj; // добавляем объект в массив
+            }
+            public void Delete(int a)//удаление 
+            {
+                if (totalElements == 0)
+                {
+
+                }
+                else
+                {
+                    for (int i = a; i < totalElements - 1; i++)
+                    {
+                        array[i] = array[i + 1];
+                    }
+                    array[totalElements] = null;
+                    totalElements--;
+                }
+            }
+            public int GetTotalElements() //возращение количество элементов в хранилище
+            {
+                return totalElements;
+            }
+            public int GetSize()// возвращение размера
+            {
+                return size;
+            }
+            public void GetNext() //метод возвращающий указатель не следующий
+            {
+                index++;
+            }
+            public void GetPrevious()//метод возвращающий указатель не предыдущий
+            {
+                index--;
+            }
+            public void Get0() //метод присваивающий index 0
+            {
+                index = 0;
+            }
+
+            public CCircle GetNow() //возвращает элемент в храниоище
+            {
+                if (array[index] != null)
+                    return array[index];
+                else return null;
+            }
         }
 
-        public CCircle GetNow() //возвращает элемент в храниоище
-        {
-            if (array[index] != null)
-                return array[index];
-            else return null;
-        }
+        
     }
 }
