@@ -103,6 +103,7 @@
             this.whiteRadioB.TabStop = true;
             this.whiteRadioB.Text = "white";
             this.whiteRadioB.UseVisualStyleBackColor = true;
+            this.whiteRadioB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
             // 
             // lineRadioButton
             // 
@@ -113,6 +114,7 @@
             this.lineRadioButton.TabStop = true;
             this.lineRadioButton.Text = "line";
             this.lineRadioButton.UseVisualStyleBackColor = true;
+            this.lineRadioButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
             // 
             // circleRadioButton
             // 
@@ -125,6 +127,7 @@
             this.circleRadioButton.TabStop = true;
             this.circleRadioButton.Text = "circle";
             this.circleRadioButton.UseVisualStyleBackColor = true;
+            this.circleRadioButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
             // 
             // Form1
             // 

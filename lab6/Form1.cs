@@ -237,7 +237,7 @@ namespace lab6
         }
         public class CCircle
         {
-            private bool select; //выделение объекта
+            public bool select; //выделение объекта
             public int x; // координата x круга
             public int y; // координата y круга 
             public int r = 30; // радиус
@@ -333,10 +333,10 @@ namespace lab6
         }
         public class LLine : CCircle
         {
-            private bool select; //выделение объекта
+            //public bool select; //выделение объекта
             //public int x; // координата x круга
            //public int y; // координата y круга 
-            public int r = 60; // радиус
+            //public int r = 60; // радиус
             //public int color;
 
             public LLine() // конструктор по умолчанию
@@ -376,8 +376,10 @@ namespace lab6
             public override bool Border(int xS, int yS) // проверка попадания в линию
             {
                 bool bord = false;
+                int _x = Math.Abs(xS - x);
+                int _y = Math.Abs(yS - y);
 
-                if ((x<=xS)&&(xS<= x + r)&&(yS==y)) // попадание координат в линию
+                if ((_x * _y) <= r) // попадание координат в линию
                 {
                     if (select == true)
                     {
