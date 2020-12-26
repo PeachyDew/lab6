@@ -377,10 +377,45 @@ namespace lab6
 
         }
 
-  
-       
-                
-        public class CCircle
+    private void button3_Click(object sender, EventArgs e)
+    {
+
+        string name = @"D:\StoreInformation.txt";
+        File.Delete(name);
+        string info;
+        info = Circle.GetTotalElements().ToString();
+        info += "\n";
+        File.AppendAllText(name, info);
+        Circle.Get0();
+        for (int j = Circle.GetTotalElements() - 1; j >= 0; j--)
+        {
+            int t;
+
+
+            if (Circle.GetNow().isA("LLine"))
+            {
+                t = 1;
+                inp.inputTXT(Circle.GetNow(), t);
+            }
+            else if (Circle.GetNow().isA("RRectangle"))
+            {
+                t = 2;
+                inp.inputTXT(Circle.GetNow(), t);
+            }
+            else if (Circle.GetNow().isA("CCircle"))
+            {
+                t = 0;
+                inp.inputTXT(Circle.GetNow(), t);
+            }
+
+            Circle.GetNext();
+        }
+        Circle.Get0();
+
+    }
+
+
+    public class CCircle
         {
             public bool select; //выделение объекта
             public int x; // координата x круга
