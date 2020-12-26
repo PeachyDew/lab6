@@ -820,123 +820,147 @@ namespace lab6
             }
         }
 
-        class MyStorage // класс хранилище
+    class MyStorage // класс хранилище
+    {
+        CCircle[] array; //массив объектов CCIrcle
+        int totalElements; //количество элементов , находящихся в хранилище
+        int size; //размер хранилища
+        int index;
+        public int CountCircle = 0, CountLine = 0, CountRectangle = 0;
+        public MyStorage() // конструктор по умолчанию
         {
-            CCircle[] array; //массив объектов CCIrcle
-            int totalElements; //количество элементов , находящихся в хранилище
-            int size; //размер хранилища
-            int index;
-            public int CountCircle = 0, CountLine = 0, CountRectangle =0;
-            public MyStorage() // конструктор по умолчанию
+            index = 0;
+            totalElements = 0;
+            size = 0;
+            array = null;
+        }
+        public MyStorage(int size) // конструктор с параметрами
+        {
+            index = 0;
+            totalElements = 0;
+            this.size = size;
+            array = new CCircle[size];
+        }
+        ~MyStorage()
+        {
+
+        }
+        public void ExpandarrElements()//расширение массива
+        {
+            CCircle[] newarray = array; //создание массива newarray идентичного array 
+            array = new CCircle[size * 2]; // на месте array создается новый массив в 2 раза больше
+            for (int i = 0; i < size; i++)
             {
-                index = 0;
-                totalElements = 0;
-                size = 0;
-                array = null;
+                array[i] = newarray[i]; //копирование элементов
             }
-            public MyStorage(int size) // конструктор с параметрами
-            {
-                index = 0;
-                totalElements = 0;
-                this.size = size;
-                array = new CCircle[size];
-            }
-            ~MyStorage()
+            size = size * 2;
+        }
+        public void Add(CCircle obj)//добавление объекта 
+        {
+            totalElements++; // увеличиваем общее количество элементво
+            if (totalElements == size) // если количество элементов равно размеру, увеличиваем
+                ExpandarrElements();
+            array[totalElements - 1] = obj; // добавляем объект в массив
+        }
+        public void CCount()
+        {
+            CountCircle++;
+        }
+        public void LCount()
+        {
+            CountLine++;
+        }
+        public void RCount()
+        {
+            CountRectangle++;
+        }
+        public void CCCount()
+        {
+            CountCircle--;
+        }
+        public void LLCount()
+        {
+            CountLine--;
+        }
+        public void RRCount()
+        {
+            CountRectangle--;
+        }
+
+        public void Delete(int a)//удаление 
+        {
+            if (totalElements == 0)
             {
 
             }
-            public void ExpandarrElements()//расширение массива
+            else
             {
-                CCircle[] newarray = array; //создание массива newarray идентичного array 
-                array = new CCircle[size * 2]; // на месте array создается новый массив в 2 раза больше
-                for (int i = 0; i < size; i++)
+                for (int i = a; i < totalElements - 1; i++)
                 {
-                    array[i] = newarray[i]; //копирование элементов
+                    array[i] = array[i + 1];
                 }
-                size = size * 2;
-            }
-            public void Add(CCircle obj)//добавление объекта 
-            {
-                totalElements++; // увеличиваем общее количество элементво
-                if (totalElements == size) // если количество элементов равно размеру, увеличиваем
-                    ExpandarrElements();
-                array[totalElements - 1] = obj; // добавляем объект в массив
-            }
-            public void CCount()
-            {
-                CountCircle++;
-            }
-            public void LCount()
-            {
-                CountLine++;
-            }
-            public void RCount()
-            {
-                CountRectangle++;
-            }
-            public void CCCount()
-            {
-                CountCircle--;
-            }
-            public void LLCount()
-            {
-                CountLine--;
-            }
-            public void RRCount()
-            {
-                CountRectangle--;
-            }
-
-            public void Delete(int a)//удаление 
-            {
-                if (totalElements == 0)
-                {
-
-                }
-                else
-                {
-                    for (int i = a; i < totalElements - 1; i++)
-                    {
-                        array[i] = array[i + 1];
-                    }
-                    array[totalElements] = null;
-                    totalElements--;
-                }
-            }
-            public int GetTotalElements() //возращение количество элементов в хранилище
-            {
-                return totalElements;
-            }
-            public int GetSize()// возвращение размера
-            {
-                return size;
-            }
-            public void GetNext() //метод возвращающий указатель не следующий
-            {
-                index++;
-            }
-            public void GetPrevious()//метод возвращающий указатель не предыдущий
-            {
-                index--;
-            }
-            public void Get0() //метод присваивающий index 0
-            {
-                index = 0;
-            }
-            public int Treeind() //метод присваивающий index 0
-            {
-                return index;
-            }
-            public CCircle GetNow() //возвращает элемент в храниоище
-            {
-                if (array[index] != null)
-                {
-                    
-                    return array[index];
-                }
-                else return null;
+                array[totalElements] = null;
+                totalElements--;
             }
         }
+        public int GetTotalElements() //возращение количество элементов в хранилище
+        {
+            return totalElements;
+        }
+        public int GetSize()// возвращение размера
+        {
+            return size;
+        }
+        public void GetNext() //метод возвращающий указатель не следующий
+        {
+            index++;
+        }
+        public void GetPrevious()//метод возвращающий указатель не предыдущий
+        {
+            index--;
+        }
+        public void Get0() //метод присваивающий index 0
+        {
+            index = 0;
+        }
+        public int Treeind() //метод присваивающий index 0
+        {
+            return index;
+        }
+        public CCircle GetNow() //возвращает элемент в храниоище
+        {
+            if (array[index] != null)
+            {
+
+                return array[index];
+            }
+            else return null;
+        }
+        class CGroup : CCircle //паттерн Composite
+        {
+            private int tempsize;
+            public CCircle[] group;
+            public CGroup()//конструктор по умолчанию
+            {
+                this.group = new CCircle[1000];
+                this.tempsize = 0;
+            }
+            public void AddToGroup(CCircle a)//добавление в группу
+            {
+                this.group[this.tempsize] = a;
+                this.tempsize++;
+            }
+            public void DelFromGroup()//удаление из группы
+            {
+                this.tempsize--;
+            }
+            public CCircle GetFromGroup()//возврат элемента из группы
+            {
+                return this.group[this.tempsize - 1];
+            }
+        }
+    }
+    }
 
        
 
