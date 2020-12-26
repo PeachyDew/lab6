@@ -413,6 +413,53 @@ namespace lab6
         Circle.Get0();
 
     }
+    private void button4_Click(object sender, EventArgs e)
+    {
+
+        string name = @"D:\StoreInformation.txt";
+
+        StreamReader sr = new StreamReader(name, System.Text.Encoding.Default);
+        {
+            string[] infos;
+            infos = File.ReadAllLines(name);
+            string info = infos[0];
+            int count = Int32.Parse(info);
+            infos = File.ReadAllLines(name);
+            for (int i = 0; i < count; i++)
+            {
+                info = infos[(i * 5) + 1];
+                string type = info;
+                info = infos[(i * 5) + 2];
+                int x = Int32.Parse(info);
+                info = infos[(i * 5) + 3];
+                int y = Int32.Parse(info);
+                info = infos[(i * 5) + 4];
+                int color = Int32.Parse(info);
+                info = infos[(i * 5) + 5];
+                int rad = Int32.Parse(info);
+                if (type == "CCircle")
+                {
+                    CCircle Lap = new CCircle(x, y, color, rad);
+                    Circle.Add(Lap);
+                    observer.AddToTree(treeView1, 1, Circle);
+                }
+                else if (type == "LLine")
+                {
+                    LLine Lap = new LLine(x, y, color, rad);
+                    Circle.Add(Lap);
+                    observer.AddToTree(treeView1, 0, Circle);
+                }
+                else if (type == "RRectangle")
+                {
+                    RRectangle Lap = new RRectangle(x, y, color, rad);
+                    Circle.Add(Lap);
+                    observer.AddToTree(treeView1, 2, Circle);
+                }
+            }
+            pictureBox.Refresh();
+            sr.Close();
+        }
+    }
 
 
     public class CCircle
