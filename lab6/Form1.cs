@@ -51,7 +51,7 @@ namespace lab6
             }
             Circle.Get0();
         }
-        public abstract class AbstractFactory//паттерн Abstract Factory
+       public abstract class AbstractFactory//паттерн Abstract Factory
         {
             protected string name = @"D:\StoreInformation.txt", info;
             protected string[] infos;
@@ -111,7 +111,7 @@ namespace lab6
 
             }
 
-        }
+        }  
 
         void Delete_Process(EventArgs e) //процесс удаления элемента/ов
         {
