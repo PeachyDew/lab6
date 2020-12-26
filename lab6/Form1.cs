@@ -17,7 +17,7 @@ namespace lab6
         MyStorage Circle = new MyStorage(50);
         MyStorage selected = new MyStorage(50);
         InPutFile inp = new InPutFile();
-   
+
         CGroup group = new CGroup();
         Observer observer = new Observer();
         bool checker1;
@@ -51,7 +51,57 @@ namespace lab6
             }
             Circle.Get0();
         }
-       public abstract class AbstractFactory//паттерн Abstract Factory
+        class Observer : MyStorage //паттерн Observer
+        {
+            private string name;
+            public void AddToTree(TreeView tree, int choice, MyStorage KS)//Добавление в дерево
+            {
+                if (choice == 1)
+                {
+                    this.name = "Круг";
+                    this.name += KS.CountCircle.ToString();
+                }
+                if (choice == 2)
+                {
+                    this.name = "Квадрат";
+                    this.name += KS.CountCircle.ToString();
+                }
+                if (choice == 0)
+                {
+                    this.name = "Линия";
+                    this.name += KS.CountLine.ToString();
+                }
+                _ = tree.Nodes[0].Nodes.Add(name);
+            }
+            public void SelectInTree(TreeView tree, int index, Color c)//Выбираем на форме, выделяется в дереве
+            {
+                tree.Nodes[0].Nodes[index].BackColor = c;
+            }
+
+            public void DeleteInTree(TreeView tree, int index, Color c)//Выбираем на форме, выделяется в дереве
+            {
+                tree.Nodes[0].Nodes[index].Remove();
+            }
+            public int SelectOutTree(string Name, int choice)//Выбираем в дереве, выделяется на форме 
+            {
+                int index = 0;
+                if (choice == 1)
+                {
+                    index = Int32.Parse(Name.Substring(4));
+                }
+                if (choice == 2)
+                {
+                    index = Int32.Parse(Name.Substring(7));
+                }
+                if (choice == 0)
+                {
+                    index = Int32.Parse(Name.Substring(5));
+                }
+                return index;
+            }
+
+        }
+        public abstract class AbstractFactory//паттерн Abstract Factory
         {
             protected string name = @"D:\StoreInformation.txt", info;
             protected string[] infos;
@@ -111,7 +161,10 @@ namespace lab6
 
             }
 
-        }  
+        }
+
+
+
 
         void Delete_Process(EventArgs e) //процесс удаления элемента/ов
         {
@@ -144,7 +197,7 @@ namespace lab6
                     Circle.Delete(i); //удаление элемента
                     group.DelFromGroup();
                     k++;
-                    
+
                 }
                 Circle.GetPrevious();
             }
@@ -174,13 +227,13 @@ namespace lab6
 
                     if (Circle.GetNow().Border(e.X, e.Y) == true) //если попали в круг 
                     {
-                        
+
                         if (!ModifierKeys.HasFlag(Keys.Control)) //если не нажат ctrl
                         {
-                           
+
 
                             Circle.GetNow().SelectChange(); //меняем выделение с true на false
-                           
+
                             group.AddToGroup(Circle.GetNow());
                         }
                         a++;
@@ -207,7 +260,7 @@ namespace lab6
 
                 if (a == 0) //если не попали в круг
                 {
-                  
+
 
                     if (circleRadioButton.Checked)
                     {
@@ -229,9 +282,9 @@ namespace lab6
                         RRectangle Pal = new RRectangle(e.X, e.Y);
                         Circle.Add(Pal);
                         Circle.RCount();
-                        observer.AddToTree(treeView1, 2,Circle);
+                        observer.AddToTree(treeView1, 2, Circle);
                     }
-                    
+
 
                     for (int i = 0; i < (Circle.GetTotalElements() - 1); i++)
                     {
@@ -262,14 +315,14 @@ namespace lab6
             }
             Circle.Get0();
             for (int i = Circle.GetTotalElements() - 1; i >= 0; i--)
-                    {
-                        if (Circle.GetNow().Getselect1() == true)
-                        {
-                            observer.SelectInTree(treeView1, Circle.Treeind(), Color.HotPink);
-                        }
+            {
+                if (Circle.GetNow().Getselect1() == true)
+                {
+                    observer.SelectInTree(treeView1, Circle.Treeind(), Color.HotPink);
+                }
 
-                        Circle.GetNext();
-                    }
+                Circle.GetNext();
+            }
             Circle.Get0();
         }
 
@@ -333,8 +386,20 @@ namespace lab6
             Circle.Get0();
             pictureBox.Refresh();
         }
-    
-          
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)//Выделение через дерево
+        {
+            int index = treeView1.SelectedNode.Index;
+            Circle.Get0();
+            for (int i = 0; i < index; i++) //сдвиг счетчика
+            {
+                Circle.GetNext();
+            }
+
+            Circle.GetNow().SelectChange3();
+            observer.SelectInTree(treeView1, Circle.Treeind(), Color.HotPink);
+            Circle.Get0();
+            pictureBox.Refresh();
+
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -377,92 +442,91 @@ namespace lab6
 
         }
 
-    private void button3_Click(object sender, EventArgs e)
-    {
 
-        string name = @"D:\StoreInformation.txt";
-        File.Delete(name);
-        string info;
-        info = Circle.GetTotalElements().ToString();
-        info += "\n";
-        File.AppendAllText(name, info);
-        Circle.Get0();
-        for (int j = Circle.GetTotalElements() - 1; j >= 0; j--)
+        private void button3_Click(object sender, EventArgs e)
         {
-            int t;
+
+            string name = @"D:\StoreInformation.txt";
+            File.Delete(name);
+            string info;
+            info = Circle.GetTotalElements().ToString();
+            info += "\n";
+            File.AppendAllText(name, info);
+            Circle.Get0();
+            for (int j = Circle.GetTotalElements() - 1; j >= 0; j--)
+            {
+                int t;
 
 
-            if (Circle.GetNow().isA("LLine"))
-            {
-                t = 1;
-                inp.inputTXT(Circle.GetNow(), t);
-            }
-            else if (Circle.GetNow().isA("RRectangle"))
-            {
-                t = 2;
-                inp.inputTXT(Circle.GetNow(), t);
-            }
-            else if (Circle.GetNow().isA("CCircle"))
-            {
-                t = 0;
-                inp.inputTXT(Circle.GetNow(), t);
-            }
+                if (Circle.GetNow().isA("LLine"))
+                {
+                    t = 1;
+                    inp.inputTXT(Circle.GetNow(), t);
+                }
+                else if (Circle.GetNow().isA("RRectangle"))
+                {
+                    t = 2;
+                    inp.inputTXT(Circle.GetNow(), t);
+                }
+                else if (Circle.GetNow().isA("CCircle"))
+                {
+                    t = 0;
+                    inp.inputTXT(Circle.GetNow(), t);
+                }
 
-            Circle.GetNext();
+                Circle.GetNext();
+            }
+            Circle.Get0();
+
         }
-        Circle.Get0();
-
-    }
-    private void button4_Click(object sender, EventArgs e)
-    {
-
-        string name = @"D:\StoreInformation.txt";
-
-        StreamReader sr = new StreamReader(name, System.Text.Encoding.Default);
+        private void button4_Click(object sender, EventArgs e)
         {
-            string[] infos;
-            infos = File.ReadAllLines(name);
-            string info = infos[0];
-            int count = Int32.Parse(info);
-            infos = File.ReadAllLines(name);
-            for (int i = 0; i < count; i++)
+
+            string name = @"D:\StoreInformation.txt";
+
+            StreamReader sr = new StreamReader(name, System.Text.Encoding.Default);
             {
-                info = infos[(i * 5) + 1];
-                string type = info;
-                info = infos[(i * 5) + 2];
-                int x = Int32.Parse(info);
-                info = infos[(i * 5) + 3];
-                int y = Int32.Parse(info);
-                info = infos[(i * 5) + 4];
-                int color = Int32.Parse(info);
-                info = infos[(i * 5) + 5];
-                int rad = Int32.Parse(info);
-                if (type == "CCircle")
+                string[] infos;
+                infos = File.ReadAllLines(name);
+                string info = infos[0];
+                int count = Int32.Parse(info);
+                infos = File.ReadAllLines(name);
+                for (int i = 0; i < count; i++)
                 {
-                    CCircle Lap = new CCircle(x, y, color, rad);
-                    Circle.Add(Lap);
-                    observer.AddToTree(treeView1, 1, Circle);
+                    info = infos[(i * 5) + 1];
+                    string type = info;
+                    info = infos[(i * 5) + 2];
+                    int x = Int32.Parse(info);
+                    info = infos[(i * 5) + 3];
+                    int y = Int32.Parse(info);
+                    info = infos[(i * 5) + 4];
+                    int color = Int32.Parse(info);
+                    info = infos[(i * 5) + 5];
+                    int rad = Int32.Parse(info);
+                    if (type == "CCircle")
+                    {
+                        CCircle Lap = new CCircle(x, y, color, rad);
+                        Circle.Add(Lap);
+                        observer.AddToTree(treeView1, 1, Circle);
+                    }
+                    else if (type == "LLine")
+                    {
+                        LLine Lap = new LLine(x, y, color, rad);
+                        Circle.Add(Lap);
+                        observer.AddToTree(treeView1, 0, Circle);
+                    }
+                    else if (type == "RRectangle")
+                    {
+                        RRectangle Lap = new RRectangle(x, y, color, rad);
+                        Circle.Add(Lap);
+                        observer.AddToTree(treeView1, 2, Circle);
+                    }
                 }
-                else if (type == "LLine")
-                {
-                    LLine Lap = new LLine(x, y, color, rad);
-                    Circle.Add(Lap);
-                    observer.AddToTree(treeView1, 0, Circle);
-                }
-                else if (type == "RRectangle")
-                {
-                    RRectangle Lap = new RRectangle(x, y, color, rad);
-                    Circle.Add(Lap);
-                    observer.AddToTree(treeView1, 2, Circle);
-                }
+                pictureBox.Refresh();
+                sr.Close();
             }
-            pictureBox.Refresh();
-            sr.Close();
         }
-    }
-
-
-    public class CCircle
+        public class CCircle
         {
             public bool select; //выделение объекта
             public int x; // координата x круга
@@ -487,11 +551,11 @@ namespace lab6
             {
                 x = _x;
                 y = _y;
-               
+
                 select = false;
                 color = color1;
             }
-            public CCircle(int _x, int _y, int color1,int rad) // конструктор с параметрами
+            public CCircle(int _x, int _y, int color1, int rad) // конструктор с параметрами
             {
                 x = _x;
                 y = _y;
@@ -509,12 +573,12 @@ namespace lab6
             {
                 if (classname() == classnm)
                 {//проверка на принадлежность
-                    
+
                     return true;
                 }
                 else
                 {
-                    
+
                     return false;
                 }
             }
@@ -540,8 +604,8 @@ namespace lab6
 
             }
             public void SelectChange3()  //метод выделяющий объект, если он не выделен
-            {           
-                    select = true;
+            {
+                select = true;
             }
             public virtual bool Border(int xS, int yS) // проверка попадания в круг 
             {
@@ -554,13 +618,13 @@ namespace lab6
                     {
 
                         select = false;
-                       
+
 
                     }
                     else
                     {
                         select = true;
-                        
+
                     }
                     bord = true;
                 }
@@ -626,7 +690,7 @@ namespace lab6
                 select = false;
                 color = color1;
             }
-            public LLine(int _x, int _y, int color1,int rad) // конструктор с параметрами
+            public LLine(int _x, int _y, int color1, int rad) // конструктор с параметрами
             {
                 x = _x;
                 y = _y;
@@ -736,7 +800,7 @@ namespace lab6
                 select = false;
                 color = color1;
             }
-            public RRectangle(int _x, int _y, int color1,int rad) // конструктор с параметрами
+            public RRectangle(int _x, int _y, int color1, int rad) // конструктор с параметрами
             {
                 x = _x;
                 y = _y;
@@ -775,12 +839,12 @@ namespace lab6
             {
                 if (classname() == classnm)
                 {
-            
+
                     return true;
                 }
                 else
                 {
-                    
+
                     return false;
                 }
             }
@@ -820,122 +884,124 @@ namespace lab6
             }
         }
 
-    class MyStorage // класс хранилище
-    {
-        CCircle[] array; //массив объектов CCIrcle
-        int totalElements; //количество элементов , находящихся в хранилище
-        int size; //размер хранилища
-        int index;
-        public int CountCircle = 0, CountLine = 0, CountRectangle = 0;
-        public MyStorage() // конструктор по умолчанию
+        class MyStorage // класс хранилище
         {
-            index = 0;
-            totalElements = 0;
-            size = 0;
-            array = null;
-        }
-        public MyStorage(int size) // конструктор с параметрами
-        {
-            index = 0;
-            totalElements = 0;
-            this.size = size;
-            array = new CCircle[size];
-        }
-        ~MyStorage()
-        {
-
-        }
-        public void ExpandarrElements()//расширение массива
-        {
-            CCircle[] newarray = array; //создание массива newarray идентичного array 
-            array = new CCircle[size * 2]; // на месте array создается новый массив в 2 раза больше
-            for (int i = 0; i < size; i++)
+            CCircle[] array; //массив объектов CCIrcle
+            int totalElements; //количество элементов , находящихся в хранилище
+            int size; //размер хранилища
+            int index;
+            public int CountCircle = 0, CountLine = 0, CountRectangle = 0;
+            public MyStorage() // конструктор по умолчанию
             {
-                array[i] = newarray[i]; //копирование элементов
+                index = 0;
+                totalElements = 0;
+                size = 0;
+                array = null;
             }
-            size = size * 2;
-        }
-        public void Add(CCircle obj)//добавление объекта 
-        {
-            totalElements++; // увеличиваем общее количество элементво
-            if (totalElements == size) // если количество элементов равно размеру, увеличиваем
-                ExpandarrElements();
-            array[totalElements - 1] = obj; // добавляем объект в массив
-        }
-        public void CCount()
-        {
-            CountCircle++;
-        }
-        public void LCount()
-        {
-            CountLine++;
-        }
-        public void RCount()
-        {
-            CountRectangle++;
-        }
-        public void CCCount()
-        {
-            CountCircle--;
-        }
-        public void LLCount()
-        {
-            CountLine--;
-        }
-        public void RRCount()
-        {
-            CountRectangle--;
-        }
-
-        public void Delete(int a)//удаление 
-        {
-            if (totalElements == 0)
+            public MyStorage(int size) // конструктор с параметрами
+            {
+                index = 0;
+                totalElements = 0;
+                this.size = size;
+                array = new CCircle[size];
+            }
+            ~MyStorage()
             {
 
             }
-            else
+            public void ExpandarrElements()//расширение массива
             {
-                for (int i = a; i < totalElements - 1; i++)
+                CCircle[] newarray = array; //создание массива newarray идентичного array 
+                array = new CCircle[size * 2]; // на месте array создается новый массив в 2 раза больше
+                for (int i = 0; i < size; i++)
                 {
-                    array[i] = array[i + 1];
+                    array[i] = newarray[i]; //копирование элементов
                 }
-                array[totalElements] = null;
-                totalElements--;
+                size = size * 2;
             }
-        }
-        public int GetTotalElements() //возращение количество элементов в хранилище
-        {
-            return totalElements;
-        }
-        public int GetSize()// возвращение размера
-        {
-            return size;
-        }
-        public void GetNext() //метод возвращающий указатель не следующий
-        {
-            index++;
-        }
-        public void GetPrevious()//метод возвращающий указатель не предыдущий
-        {
-            index--;
-        }
-        public void Get0() //метод присваивающий index 0
-        {
-            index = 0;
-        }
-        public int Treeind() //метод присваивающий index 0
-        {
-            return index;
-        }
-        public CCircle GetNow() //возвращает элемент в храниоище
-        {
-            if (array[index] != null)
+            public void Add(CCircle obj)//добавление объекта 
             {
-
-                return array[index];
+                totalElements++; // увеличиваем общее количество элементво
+                if (totalElements == size) // если количество элементов равно размеру, увеличиваем
+                    ExpandarrElements();
+                array[totalElements - 1] = obj; // добавляем объект в массив
             }
-            else return null;
+            public void CCount()
+            {
+                CountCircle++;
+            }
+            public void LCount()
+            {
+                CountLine++;
+            }
+            public void RCount()
+            {
+                CountRectangle++;
+            }
+            public void CCCount()
+            {
+                CountCircle--;
+            }
+            public void LLCount()
+            {
+                CountLine--;
+            }
+            public void RRCount()
+            {
+                CountRectangle--;
+            }
+
+            public void Delete(int a)//удаление 
+            {
+                if (totalElements == 0)
+                {
+
+                }
+                else
+                {
+                    for (int i = a; i < totalElements - 1; i++)
+                    {
+                        array[i] = array[i + 1];
+                    }
+                    array[totalElements] = null;
+                    totalElements--;
+                }
+            }
+            public int GetTotalElements() //возращение количество элементов в хранилище
+            {
+                return totalElements;
+            }
+            public int GetSize()// возвращение размера
+            {
+                return size;
+            }
+            public void GetNext() //метод возвращающий указатель не следующий
+            {
+                index++;
+            }
+            public void GetPrevious()//метод возвращающий указатель не предыдущий
+            {
+                index--;
+            }
+            public void Get0() //метод присваивающий index 0
+            {
+                index = 0;
+            }
+            public int Treeind() //метод присваивающий index 0
+            {
+                return index;
+            }
+            public CCircle GetNow() //возвращает элемент в храниоище
+            {
+                if (array[index] != null)
+                {
+
+                    return array[index];
+                }
+                else return null;
+            }
         }
+
         class CGroup : CCircle //паттерн Composite
         {
             private int tempsize;
@@ -959,8 +1025,7 @@ namespace lab6
                 return this.group[this.tempsize - 1];
             }
         }
-    }
-    }
 
-       
+    }
+}
 
