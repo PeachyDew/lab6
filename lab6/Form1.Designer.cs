@@ -28,13 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("All elements");
             this.buttonDelete = new System.Windows.Forms.Button();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.whiteRadioB = new System.Windows.Forms.RadioButton();
+            this.rectangleRadioButton = new System.Windows.Forms.RadioButton();
             this.lineRadioButton = new System.Windows.Forms.RadioButton();
             this.circleRadioButton = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +86,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.whiteRadioB);
+            this.groupBox1.Controls.Add(this.rectangleRadioButton);
             this.groupBox1.Controls.Add(this.lineRadioButton);
             this.groupBox1.Controls.Add(this.circleRadioButton);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -93,17 +97,18 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "objects";
             // 
-            // whiteRadioB
+            // rectangleRadioButton
             // 
-            this.whiteRadioB.AutoSize = true;
-            this.whiteRadioB.Location = new System.Drawing.Point(126, 24);
-            this.whiteRadioB.Name = "whiteRadioB";
-            this.whiteRadioB.Size = new System.Drawing.Size(54, 19);
-            this.whiteRadioB.TabIndex = 2;
-            this.whiteRadioB.TabStop = true;
-            this.whiteRadioB.Text = "white";
-            this.whiteRadioB.UseVisualStyleBackColor = true;
-            this.whiteRadioB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
+            this.rectangleRadioButton.AutoSize = true;
+            this.rectangleRadioButton.Location = new System.Drawing.Point(126, 24);
+            this.rectangleRadioButton.Name = "rectangleRadioButton";
+            this.rectangleRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.rectangleRadioButton.Size = new System.Drawing.Size(56, 19);
+            this.rectangleRadioButton.TabIndex = 2;
+            this.rectangleRadioButton.TabStop = true;
+            this.rectangleRadioButton.Text = "sqare";
+            this.rectangleRadioButton.UseVisualStyleBackColor = true;
+            this.rectangleRadioButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
             // 
             // lineRadioButton
             // 
@@ -129,11 +134,49 @@
             this.circleRadioButton.UseVisualStyleBackColor = true;
             this.circleRadioButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(584, 131);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Input";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button3_Click);
+            this.button1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(584, 176);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 7;
+            this.button2.Text = "Output";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button4_Click);
+            this.button2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
+            // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(584, 230);
+            this.treeView1.Name = "treeView1";
+            treeNode1.Name = "Узел1";
+            treeNode1.Text = "All elements";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.treeView1.Size = new System.Drawing.Size(194, 401);
+            this.treeView1.TabIndex = 8;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(840, 643);
+            this.Controls.Add(this.treeView1);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.buttonDelete);
@@ -153,9 +196,12 @@
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton whiteRadioB;
+        private System.Windows.Forms.RadioButton rectangleRadioButton;
         private System.Windows.Forms.RadioButton lineRadioButton;
         private System.Windows.Forms.RadioButton circleRadioButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
 
